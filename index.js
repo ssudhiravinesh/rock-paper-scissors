@@ -1,7 +1,6 @@
 console.log("HELLO AMMA!")
 
 let computerChoice;
-let humanChoice;
 let humanScore =0;
 let computerScore =0;
 
@@ -17,59 +16,61 @@ function getComputerChoice () {
     return computerChoice;
 }
 
-function getHumanChoice() {
-   humanChoice = prompt("Enter your ATTACK CHOICE", "Rock");
-   if (humanChoice === null) {
-    console.log("Don't click on cancel button. Enter your valid ATTACK CHOICE again");
-    getHumanChoice();
-   }
-
-   humanChoice = humanChoice.charAt(0).toUpperCase() + humanChoice.slice(1).toLowerCase();
-
-   return humanChoice;
-}
 
 function playRound (humanChoice, computerChoice) {
-    if (humanChoice !== "Rock" && humanChoice !== "Paper" && humanChoice !== "Scissors") {
-        console.log("Enter a valid ATTACK CHOICE!");
-        playRound(getHumanChoice(), computerChoice);
-       }
-
-    if (humanChoice === "Rock" && computerChoice === "Scissors" || humanChoice === "Scissors" && computerChoice === "Rock") {
-        console.log(`Rock BEATS Scissors, ${(humanChoice === "Rock")? "Human" : "Computer"} wins!`);
-        ((humanChoice === "Rock") ? humanScore++ : computerScore++);
-        console.log("Your Score : " + humanScore);
-        console.log("Computer's Score : " + computerScore);
-    }
-    if (humanChoice === "Rock" && computerChoice === "Paper" || humanChoice === "Paper" && computerChoice === "Rock") {
-        console.log(`Paper BEATS Rock, ${(humanChoice === "Paper")? "Human" : "Computer"} wins!`);
-        ((humanChoice === "Paper")? humanScore++ : computerScore++);
-        console.log("Your Score : " + humanScore);
-        console.log("Computer's Score : " + computerScore);
-    }
-    if (humanChoice === "Paper" && computerChoice === "Scissors" || humanChoice === "Scissors" && computerChoice === "Paper") {
-        console.log(`Scissors BEATS Paper, ${(humanChoice === "Scissors")? "Human" : "Computer"} wins!`);
-        ((humanChoice === "Scissors")? humanScore++ : computerScore++);
-        console.log("Your Score : " + humanScore);
-        console.log("Computer's Score : " + computerScore);
-    }
-    if (humanChoice === "Rock" && computerChoice === "Rock" || humanChoice === "Scissors" && computerChoice === "Scissors" || humanChoice === "Paper" && computerChoice === "Paper") {
-        console.log("It's a TIE");
-        console.log("Your Score : " + humanScore);
-        console.log("Computer's Score : " + computerScore);
+    if (
+        (humanChoice === "Rock" && computerChoice === "Scissors") ||
+        (humanChoice === "Paper" && computerChoice === "Rock") ||
+        (humanChoice === "Scissors" && computerChoice === "Paper")
+    ) {
+        humanScore++;
+    } else {
+        computerScore++;
     }
 }
 
-function playGame () {
-    console.log ("Let's begin the game - ROCK PAPER SCISSORS. \n There are five rounds in total. \n In each round you will be prompted to enter your ATTACK CHOICE \n  1. Rock \n 2. Paper \n 3. Scissors \n The computer will also enter a choice. \nAfter five rounds, the winner will be declared.");
+const tryAgain = document.querySelector(".tryAgain");
+tryAgain.addEventListener("click", ()=>{
+    result.textContent="";
+    compChoice.textContent="";
+    compScore.textContent="";
+    hmnScore.textContent="";
+    computerScore=0;
+    humanScore=0;
+    document.body.style.backgroundColor="white";
+})
 
-    for (let i=0; i<5 ; i++) {
-        console.log(`ROUND ${i+1}`);
-        playRound(getHumanChoice(), getComputerChoice());
-        console.log("\n");
-    }
-    
-    let Winner = (computerScore > humanScore) ? "Computer WINS. Accept your defeat" : (computerScore == humanScore) ? "GAME TIED" : "You WIN! Wanna try again?";
-    console.log(Winner);
-    
-}
+const result = document.querySelector(".result>h3");
+const compChoice = document.querySelector(".compChoice");
+const compScore = document.querySelector(".computerScore>h3");
+const hmnScore = document.querySelector(".humanScore>h3");
+
+const btn = document.querySelectorAll(".btn");
+btn.forEach((button)=>{
+    button.addEventListener("click", (e)=>{
+        if(humanScore == 5|| computerScore == 5) {
+            return;
+        }
+        playRound(e.target.textContent, getComputerChoice());
+       
+        compChoice.textContent = computerChoice;
+        
+        compScore.textContent = computerScore;
+
+        hmnScore.textContent = humanScore;
+
+        if(humanScore == 5|| computerScore == 5) {
+           
+            if(humanScore==computerScore) {
+                result.textContent = "It's a TIE!";
+                document.body.style.backgroundColor = "yellow";
+            } else if (humanScore > computerScore) {
+                result.textContent = "You Win!!!";
+                document.body.style.backgroundColor = "green";
+            } else {
+                result.textContent = "Oops! Computer won against you!";
+                document.body.style.backgroundColor = "red";
+            }
+        }
+        })
+})
