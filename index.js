@@ -24,11 +24,11 @@ function playRound (humanChoice, computerChoice) {
         (humanChoice === "Scissors" && computerChoice === "Paper")
     ) {
         humanScore++;
-    } else if(humanChoice == computerChoice){
-        humanChoice++;
-        computerChoice++;
+    } else if(humanChoice === computerChoice){
+        humanScore++;
+        computerScore++;
     } else {
-        computerChoice++;
+        computerScore++;
     }
 }
 
